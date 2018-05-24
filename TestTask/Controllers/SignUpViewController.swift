@@ -150,6 +150,8 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         NetworkManager.shared.register(username: username, email: email, password: password, avatar: imageData, success: {
             print("Success register !")
+            let controller = self.storyboard!.instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
+            self.navigationController!.pushViewController(controller, animated: true)
         }) { (error) in
             AlertsManager.shared.presentAlert(self, title: "Registration error", message: error)
         }

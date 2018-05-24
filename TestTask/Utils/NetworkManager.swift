@@ -15,6 +15,7 @@ class NetworkManager {
     enum Urls:String {
         case register = "/create"
         case login = "/login"
+        case all = "/all"
     }
     
     static let shared = NetworkManager()
@@ -67,8 +68,6 @@ class NetworkManager {
                                     let value = item as! [String:Any]
                                     if let error = value.keys.first, error == "errors"{
                                         fail((value["errors"] as! [String]).first!)
-                                    }else{
-                                        fail("Wrong data!")
                                     }
                                 }
                             }
@@ -113,6 +112,32 @@ class NetworkManager {
                 }
             }else{
                 fail("Is not succeed")
+            }
+        }
+    }
+    
+    func getAll( success:@escaping (_ data:[String]) -> Void, fail:@escaping() -> Void){
+        guard let userToken = UserDefaults.standard.object(forKey: "token") else {return}
+        let params =  ["token":userToken] as [String:Any]
+        let requestURL:String = apiURL+Urls.all.rawValue
+    
+        Alamofire.request(requestURL, method: .get, parameters: params ).responseJSON { response in
+            if let status = response.response?.statusCode {
+                if((status<300)&&(status>=200)){
+                    if let result = response.result.value{
+                        let JSON = result as! [String:Any]
+                        print(result)
+                        
+                    }
+                    else{
+                        fail()
+                    }
+                }
+                else{
+                    fail()
+                }
+            }else{
+                fail()
             }
         }
     }

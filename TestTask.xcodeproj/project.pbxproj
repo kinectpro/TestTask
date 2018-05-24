@@ -17,6 +17,8 @@
 		C52E8D5C20B59B8E006AEA07 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52E8D5B20B59B8E006AEA07 /* SignUpViewController.swift */; };
 		C52E8D6320B5A082006AEA07 /* AlertsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52E8D6220B5A082006AEA07 /* AlertsManager.swift */; };
 		C52E8DA120B6E696006AEA07 /* CameraHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52E8DA020B6E696006AEA07 /* CameraHandler.swift */; };
+		C5DB5DFF20B6FFA700371FFC /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DB5DFE20B6FFA700371FFC /* GalleryViewController.swift */; };
+		C5DB5E0120B7068500371FFC /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DB5E0020B7068500371FFC /* AddItemViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		C52E8D5B20B59B8E006AEA07 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		C52E8D6220B5A082006AEA07 /* AlertsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsManager.swift; sourceTree = "<group>"; };
 		C52E8DA020B6E696006AEA07 /* CameraHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraHandler.swift; sourceTree = "<group>"; };
+		C5DB5DFE20B6FFA700371FFC /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
+		C5DB5E0020B7068500371FFC /* AddItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
 		F68B1B839B4A09FBED77F344 /* Pods-TestTask.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestTask.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestTask/Pods-TestTask.debug.xcconfig"; sourceTree = "<group>"; };
 		FAF00AC033FFE5A6E53F7395 /* Pods_TestTask.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestTask.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -120,6 +124,8 @@
 			children = (
 				C52E8D5720B59354006AEA07 /* LoginViewController.swift */,
 				C52E8D5B20B59B8E006AEA07 /* SignUpViewController.swift */,
+				C5DB5DFE20B6FFA700371FFC /* GalleryViewController.swift */,
+				C5DB5E0020B7068500371FFC /* AddItemViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -154,7 +160,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = kinectpro;
 				TargetAttributes = {
 					C52E8D4120B57FB4006AEA07 = {
@@ -262,9 +268,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				C52E8D6320B5A082006AEA07 /* AlertsManager.swift in Sources */,
+				C5DB5DFF20B6FFA700371FFC /* GalleryViewController.swift in Sources */,
 				C52E8D5A20B59442006AEA07 /* NetworkManager.swift in Sources */,
 				C52E8D5820B59354006AEA07 /* LoginViewController.swift in Sources */,
 				C52E8DA120B6E696006AEA07 /* CameraHandler.swift in Sources */,
+				C5DB5E0120B7068500371FFC /* AddItemViewController.swift in Sources */,
 				C52E8D4620B57FB4006AEA07 /* AppDelegate.swift in Sources */,
 				C52E8D5C20B59B8E006AEA07 /* SignUpViewController.swift in Sources */,
 			);
@@ -306,6 +314,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -313,6 +322,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -363,6 +373,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -370,6 +381,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;

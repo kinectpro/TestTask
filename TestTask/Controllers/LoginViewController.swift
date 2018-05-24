@@ -31,6 +31,8 @@ class LoginViewController: UIViewController {
         let password = passwordTextField.text
         NetworkManager.shared.signIn(email:email, password: password, success: {
             print("Success login")
+            let controller = self.storyboard!.instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
+            self.navigationController!.pushViewController(controller, animated: true)
         }) { errorMessage in
             AlertsManager.shared.presentAlert(self, title: "Fail", message: errorMessage)
         }
