@@ -27,6 +27,9 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func setup() {
+        
+        avatarImageView.layer.cornerRadius = avatarImageView.frame.size.width/2
+        avatarImageView.clipsToBounds = true
         if let avatarUrl = UserDefaults.standard.object(forKey: "avatar"){
             self.avatarImageView.af_setImage(withURL: URL(string:avatarUrl as! String)!)
         }

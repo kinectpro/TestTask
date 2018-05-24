@@ -11,11 +11,12 @@ import Alamofire
 import ObjectMapper
 
 class NetworkManager {
-    
+    //c4d7a141d9fedb337e9c1d5200591f7d
     enum Urls:String {
         case register = "/create"
         case login = "/login"
         case all = "/all"
+        case addImage = "/image"
     }
     
     static let shared = NetworkManager()
@@ -138,6 +139,64 @@ class NetworkManager {
                 }
             }else{
                 fail()
+            }
+        }
+    }
+    
+    func saveImage(image:ItemModel?, success:@escaping () -> Void, fail:@escaping(_ errorMessage:String) -> Void ) {
+        guard let userToken = UserDefaults.standard.object(forKey: "token") else {return}
+
+        let requestURL:String = apiURL+Urls.addImage.rawValue
+        
+        let headers: HTTPHeaders = [
+            "token": userToken as! String,
+            "Accept": "application/json"
+        ]
+        Alamofire.upload(multipartFormData: { (multipartFormData) in
+            for (key, value) in (image?.toJSON())! {
+                //multipartFormData.append((value as AnyObject).string!.data(using: .utf8)!, withName: key)
+                multipartFormData.append(((value as? String)?.data(using: String.Encoding.utf8))!, withName: key)
+            }
+            multipartFormData.append((image?.image)!, withName: "file", fileName: "file.png", mimeType: "image/png")
+        }, to:requestURL,  method : .post, headers:headers)
+        { (result) in
+            switch result {
+            case .success(let upload, _, _):
+                upload.responseJSON { response in
+                    if let status = response.response?.statusCode {
+                        if((status<300)&&(status>=200)){
+                            if let result = response.result.value {
+                                let JSON = result as! NSDictionary
+                                print(JSON)
+//                                if let token = JSON.object(forKey: "token"){
+//                                    UserDefaults.standard.set(token, forKey: "token")
+//                                    if let avatar = JSON.object(forKey: "avatar"){
+//                                        UserDefaults.standard.set(avatar, forKey: "avatar")
+//                                    }
+//                                    UserDefaults.standard.synchronize()
+//                                    success()
+//                                }else{
+//                                    if let errorMessage = JSON.object(forKey: "error") {
+//                                        fail(errorMessage as! String)
+//                                    }
+//                                }
+                            }else{
+                                fail("Empty server response")
+                            }
+                        }else if status == 400{
+//                            let JSON = response.result.value as! NSDictionary
+//                            let errorDict = JSON.object(forKey: "children") as! [String:Any]
+//                            for item in errorDict.values {
+//                                let value = item as! [String:Any]
+//                                if let error = value.keys.first, error == "errors"{
+//                                    fail((value["errors"] as! [String]).first!)
+//                                }
+//                            }
+                        }
+                    }
+                }
+            case .failure(let encodingError):
+                fail(encodingError.localizedDescription)
             }
         }
     }

@@ -19,6 +19,7 @@
 		C52E8DA120B6E696006AEA07 /* CameraHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52E8DA020B6E696006AEA07 /* CameraHandler.swift */; };
 		C5DB5DFF20B6FFA700371FFC /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DB5DFE20B6FFA700371FFC /* GalleryViewController.swift */; };
 		C5DB5E0120B7068500371FFC /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DB5E0020B7068500371FFC /* AddItemViewController.swift */; };
+		FA7F618120B73DE8000D7A15 /* ItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7F618020B73DE8000D7A15 /* ItemModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		C5DB5DFE20B6FFA700371FFC /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		C5DB5E0020B7068500371FFC /* AddItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
 		F68B1B839B4A09FBED77F344 /* Pods-TestTask.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestTask.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestTask/Pods-TestTask.debug.xcconfig"; sourceTree = "<group>"; };
+		FA7F618020B73DE8000D7A15 /* ItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemModel.swift; sourceTree = "<group>"; };
 		FAF00AC033FFE5A6E53F7395 /* Pods_TestTask.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestTask.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -105,6 +107,7 @@
 		C52E8D5D20B59C52006AEA07 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				FA7F618020B73DE8000D7A15 /* ItemModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -142,7 +145,6 @@
 				C52E8D3F20B57FB4006AEA07 /* Frameworks */,
 				C52E8D4020B57FB4006AEA07 /* Resources */,
 				971BD5B9DA24EF4C46925E90 /* [CP] Embed Pods Frameworks */,
-				8548FD184608259AAA66C123 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -201,21 +203,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		8548FD184608259AAA66C123 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TestTask/Pods-TestTask-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		971BD5B9DA24EF4C46925E90 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -270,6 +257,7 @@
 				C52E8D6320B5A082006AEA07 /* AlertsManager.swift in Sources */,
 				C5DB5DFF20B6FFA700371FFC /* GalleryViewController.swift in Sources */,
 				C52E8D5A20B59442006AEA07 /* NetworkManager.swift in Sources */,
+				FA7F618120B73DE8000D7A15 /* ItemModel.swift in Sources */,
 				C52E8D5820B59354006AEA07 /* LoginViewController.swift in Sources */,
 				C52E8DA120B6E696006AEA07 /* CameraHandler.swift in Sources */,
 				C5DB5E0120B7068500371FFC /* AddItemViewController.swift in Sources */,
