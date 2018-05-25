@@ -13,8 +13,8 @@ class ItemModel:NSObject, Mappable {
     var image:Data?
     var descriptionItem: String?
     var hashtag:String?
-    var latitude:Float?
-    var longitude:Float?
+    var latitude:String?
+    var longitude:String?
     
     override init() {
         super.init()
@@ -25,10 +25,10 @@ class ItemModel:NSObject, Mappable {
     }
     
     func mapping(map: Map) {
-        image         <- map["image"]
-        descriptionItem  <- map["description"]
-        hashtag  <- map["hashtag"]
-        latitude  <- map["latitude"]
-        longitude  <- map["longitude"]
+        image               <- map["image"]
+        descriptionItem     <- map["description"]
+        hashtag             <- map["hashtag"]
+        latitude            <- map["latitude"]
+        longitude           <- map["longitude"]
     }
 }

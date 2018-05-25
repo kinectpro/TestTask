@@ -20,6 +20,7 @@ class AddItemViewController: UIViewController, UIImagePickerControllerDelegate, 
     let imagePicker:UIImagePickerController = UIImagePickerController()
     var locationManager:CLLocationManager!
     var userLocation:CLLocation!
+    var isSelectedPhoto = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,28 +28,42 @@ class AddItemViewController: UIViewController, UIImagePickerControllerDelegate, 
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(addPhotoTap))
         self.placeImageView.isUserInteractionEnabled = true
         self.placeImageView.addGestureRecognizer(tapGestureRecognizer)
-        
+        determineMyCurrentLocation()
     }
 
     @IBAction func doneTapped(_ sender: UIBarButtonItem) {
+        if isSelectedPhoto {
+             saveImage()
+        }else{
+            AlertsManager.shared.presentAlert(self, title: "Warning!", message: "Please add photo from camera or gallery")
+        }
+    }
+    
+    func saveImage(){
         determineMyCurrentLocation()
-        guard userLocation != nil else {return}
-        var item = ItemModel()
+        if userLocation == nil {
+            return
+        }
+        
+        let item = ItemModel()
         item.descriptionItem = descriptionTextField.text
         item.hashtag = hashtagTextField.text
         item.image = UIImageJPEGRepresentation(placeImageView.image!, 0.5)
-        item.longitude = Float(userLocation.coordinate.longitude)
-        item.latitude = Float(userLocation.coordinate.latitude)
+        item.longitude = userLocation.coordinate.longitude.description
+        item.latitude = userLocation.coordinate.latitude.description
         
         NetworkManager.shared.saveImage(image: item, success: {
-            print("Success save image")
+            debugPrint("Image successfully created")
+            self.isSelectedPhoto = false
+           // self.navigationController?.popToRootViewController(animated: true)
+            self.navigationController?.popViewController(animated: true)
         }) { (error) in
-            print("Error!!")
+            AlertsManager.shared.presentAlert(self, title: "Error", message: error)
         }
     }
     
     @objc func addPhotoTap (_ sender:UIView){
-        
+        isSelectedPhoto = true
         var available : Bool = false  //marker for available resourses
         let optionMenu = UIAlertController(title: nil, message: "Choose source", preferredStyle: .actionSheet)
         
@@ -149,6 +164,8 @@ class AddItemViewController: UIViewController, UIImagePickerControllerDelegate, 
             placeImageView.contentMode = .scaleToFill
             placeImageView.image = pickedImage
         }
+        
+        //Check location from image
         let url = info[UIImagePickerControllerReferenceURL] as! URL
         let library = ALAssetsLibrary()
         library.asset(for: url as URL!, resultBlock: { (asset) in
@@ -162,6 +179,7 @@ class AddItemViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        isSelectedPhoto = false
         dismiss(animated: true, completion: nil)
     }
     
@@ -169,20 +187,15 @@ class AddItemViewController: UIViewController, UIImagePickerControllerDelegate, 
     func determineMyCurrentLocation() {
         locationManager = CLLocationManager()
         locationManager.delegate = self
-        //locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         
         if CLLocationManager.locationServicesEnabled() {
             locationManager.startUpdatingLocation()
-            //locationManager.startUpdatingHeading()
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         userLocation = locations[0] as CLLocation
-        
-        // Call stopUpdatingLocation() to stop listening for location updates,
-        // other wise this function will be called every time when user location changes.
         
         manager.stopUpdatingLocation()
         
@@ -193,5 +206,6 @@ class AddItemViewController: UIViewController, UIImagePickerControllerDelegate, 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
     {
         print("Error \(error)")
+        AlertsManager.shared.presentAlert(self, title: "Location error!", message: "Please, allow location permissions and try again!")
     }
 }

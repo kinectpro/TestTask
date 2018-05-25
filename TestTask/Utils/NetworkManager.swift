@@ -17,6 +17,7 @@ class NetworkManager {
         case login = "/login"
         case all = "/all"
         case addImage = "/image"
+        case gif = "/gif"
     }
     
     static let shared = NetworkManager()
@@ -117,28 +118,62 @@ class NetworkManager {
         }
     }
     
-    func getAll( success:@escaping (_ data:[String]) -> Void, fail:@escaping() -> Void){
+    func getAll( success:@escaping (_ data:[ImageModel]) -> Void, fail:@escaping(_ errorMessage:String) -> Void){
         guard let userToken = UserDefaults.standard.object(forKey: "token") else {return}
-        let params =  ["token":userToken] as [String:Any]
         let requestURL:String = apiURL+Urls.all.rawValue
-    
-        Alamofire.request(requestURL, method: .get, parameters: params ).responseJSON { response in
+        let headers: HTTPHeaders = [
+            "token": userToken as! String,
+            "Accept": "application/json"
+        ]
+        
+        Alamofire.request(requestURL, headers: headers).responseJSON { response in
             if let status = response.response?.statusCode {
                 if((status<300)&&(status>=200)){
                     if let result = response.result.value{
                         let JSON = result as! [String:Any]
                         print(result)
-                        
+                        let JSONArray = JSON["images"] as! Array <[String:Any]>
+                        let images = Mapper<ImageModel>().mapArray(JSONArray: JSONArray)
+                        success(images)
                     }
                     else{
-                        fail()
+                        fail("Empty server response")
                     }
-                }
-                else{
-                    fail()
+                }else if status == 403{
+                    fail("Invalid access token")
                 }
             }else{
-                fail()
+                fail("Is not succeed")
+            }
+        }
+    }
+    
+    func getGif(weather:String, success:@escaping (_ url:String) -> Void, fail:@escaping(_ errorMessage:String) -> Void){
+        guard let userToken = UserDefaults.standard.object(forKey: "token") else {return}
+        let requestURL:String = apiURL+Urls.gif.rawValue
+        let headers: HTTPHeaders = [
+            "token": userToken as! String,
+            "Accept": "application/json"
+        ]
+        let params =  ["weather":weather]
+        Alamofire.request(requestURL, parameters:params, headers: headers).responseJSON { response in
+            if let status = response.response?.statusCode {
+                if((status<300)&&(status>=200)){
+                    if let result = response.result.value{
+                        let JSON = result as! [String:Any]
+                        print(JSON["gif"] as! String)
+                        if let url = JSON["gif"]{
+                            success(url as! String)
+                        }
+                    }
+                    else{
+                        fail("Empty server response")
+                    }
+                }else if status == 403{
+                    fail("Invalid access token")
+                }
+            }else{
+                fail("Is not succeed")
             }
         }
     }
@@ -149,15 +184,16 @@ class NetworkManager {
         let requestURL:String = apiURL+Urls.addImage.rawValue
         
         let headers: HTTPHeaders = [
-            "token": userToken as! String,
+            "token": userToken as! String, //c4d7a141d9fedb337e9c1d5200591f7d
             "Accept": "application/json"
         ]
+        let params = image?.toJSON()
+        
         Alamofire.upload(multipartFormData: { (multipartFormData) in
-            for (key, value) in (image?.toJSON())! {
-                //multipartFormData.append((value as AnyObject).string!.data(using: .utf8)!, withName: key)
+            for (key, value) in params! {
                 multipartFormData.append(((value as? String)?.data(using: String.Encoding.utf8))!, withName: key)
             }
-            multipartFormData.append((image?.image)!, withName: "file", fileName: "file.png", mimeType: "image/png")
+            multipartFormData.append((image?.image)!, withName: "image", fileName: "file.png", mimeType: "image/png")
         }, to:requestURL,  method : .post, headers:headers)
         { (result) in
             switch result {
@@ -165,39 +201,34 @@ class NetworkManager {
                 upload.responseJSON { response in
                     if let status = response.response?.statusCode {
                         if((status<300)&&(status>=200)){
-                            if let result = response.result.value {
-                                let JSON = result as! NSDictionary
-                                print(JSON)
-//                                if let token = JSON.object(forKey: "token"){
-//                                    UserDefaults.standard.set(token, forKey: "token")
-//                                    if let avatar = JSON.object(forKey: "avatar"){
-//                                        UserDefaults.standard.set(avatar, forKey: "avatar")
-//                                    }
-//                                    UserDefaults.standard.synchronize()
-//                                    success()
-//                                }else{
-//                                    if let errorMessage = JSON.object(forKey: "error") {
-//                                        fail(errorMessage as! String)
-//                                    }
-//                                }
+                            if response.result.value != nil {
+                                success()
                             }else{
                                 fail("Empty server response")
                             }
                         }else if status == 400{
-//                            let JSON = response.result.value as! NSDictionary
-//                            let errorDict = JSON.object(forKey: "children") as! [String:Any]
-//                            for item in errorDict.values {
-//                                let value = item as! [String:Any]
-//                                if let error = value.keys.first, error == "errors"{
-//                                    fail((value["errors"] as! [String]).first!)
-//                                }
-//                            }
+                            let JSON = response.result.value as! NSDictionary
+                            print(JSON)
+                            let errorDict = JSON.object(forKey: "children") as! [String:Any]
+                            for item in errorDict.values {
+                                let value = item as! [String:Any]
+                                if let error = value.keys.first, error == "errors"{
+                                    fail((value["errors"] as! [String]).first!)
+                                }
+                            }
+                        }else if status == 403  {
+                            let JSON = response.result.value as! NSDictionary
+                            if let error = JSON["error"] {
+                                print(error)
+                                fail(error as! String)
+                            }
                         }
                     }
                 }
             case .failure(let encodingError):
                 fail(encodingError.localizedDescription)
             }
+            print(result)
         }
     }
 }
