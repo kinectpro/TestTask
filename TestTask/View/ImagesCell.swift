@@ -23,7 +23,7 @@ class ImagesCell: UICollectionViewCell {
         itemImageView.af_setImage(withURL: URL(string:urlString)!)
         weatherLabel.text = weather
         
-        let address = parameters.address ?? "Some place no address"
+        let address = parameters.address ?? "No Address"
         addressLabel.text = address
     }
 }

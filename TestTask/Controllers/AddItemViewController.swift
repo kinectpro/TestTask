@@ -7,24 +7,24 @@
 //
 
 import UIKit
-import Photos
-import AVFoundation
 import CoreLocation
-import AssetsLibrary
 
-class AddItemViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate {
+
+class AddItemViewController: UIViewController, CLLocationManagerDelegate {
 
     @IBOutlet weak var placeImageView: UIImageView!
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var hashtagTextField: UITextField!
-    let imagePicker:UIImagePickerController = UIImagePickerController()
+    
+    let cameraHandler = CameraHandler()
     var locationManager:CLLocationManager!
     var userLocation:CLLocation!
     var isSelectedPhoto = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.imagePicker.delegate = self
+        isSelectedPhoto = false
+        
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(addPhotoTap))
         self.placeImageView.isUserInteractionEnabled = true
         self.placeImageView.addGestureRecognizer(tapGestureRecognizer)
@@ -35,7 +35,7 @@ class AddItemViewController: UIViewController, UIImagePickerControllerDelegate, 
         if isSelectedPhoto {
              saveImage()
         }else{
-            AlertsManager.shared.presentAlert(self, title: "Warning!", message: "Please add photo from camera or gallery")
+            AlertsManager.shared.presentAlert(self, title: "Warning", message: "Please add photo from camera or gallery")
         }
     }
     
@@ -55,7 +55,6 @@ class AddItemViewController: UIViewController, UIImagePickerControllerDelegate, 
         NetworkManager.shared.saveImage(image: item, success: {
             debugPrint("Image successfully created")
             self.isSelectedPhoto = false
-           // self.navigationController?.popToRootViewController(animated: true)
             self.navigationController?.popViewController(animated: true)
         }) { (error) in
             AlertsManager.shared.presentAlert(self, title: "Error", message: error)
@@ -63,124 +62,18 @@ class AddItemViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     @objc func addPhotoTap (_ sender:UIView){
-        isSelectedPhoto = true
-        var available : Bool = false  //marker for available resourses
-        let optionMenu = UIAlertController(title: nil, message: "Choose source", preferredStyle: .actionSheet)
-        
-        // condition for available PhotoLibrary
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary)||(AVCaptureDevice.authorizationStatus(for: AVMediaType.video) == .notDetermined) {
-            available = true
-            
-            let photoFromGallery = UIAlertAction(title: "Photo Gallery", style: .default, handler: {
-                (alert: UIAlertAction!) -> Void in
-                var markerForStatusPhotoLibraryAccess = true
-                if (PHPhotoLibrary.authorizationStatus() == .notDetermined) {
-                    markerForStatusPhotoLibraryAccess = false
-                }
-                if (PHPhotoLibrary.authorizationStatus() == .denied)||(PHPhotoLibrary.authorizationStatus() == .notDetermined) {
-                    PHPhotoLibrary.requestAuthorization(
-                        { status in
-                            // User clicked ok
-                            if (status == .authorized) {
-                                self.showImagePicker(.photoLibrary)
-                                // User clicked don't allow
-                            } else {
-                                if markerForStatusPhotoLibraryAccess {
-                                    AlertsManager.shared.presentAlert(self, title: "Error", message: "Access denied")
-                                }
-                            }
-                    })
-                } else {
-                    self.showImagePicker(.photoLibrary)
-                }
-            })
-            optionMenu.addAction(photoFromGallery)
+        self.isSelectedPhoto = true
+        cameraHandler.startImagePicker(vc: self, getLocationPhoto: true)
+        cameraHandler.imagePickedBlock = { (image) in
+            self.placeImageView.contentMode = .scaleToFill
+            self.placeImageView.image = image
         }
-        
-        // condition for available Camera
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            
-            available = true
-            
-            let photoFromCamera = UIAlertAction(title: "Camera", style: .default, handler: {
-                (alert: UIAlertAction!) -> Void in
-                
-                var markerForStatusPhotoCameraAccess = true
-                if (AVCaptureDevice.authorizationStatus(for: AVMediaType.video) == .notDetermined) {
-                    markerForStatusPhotoCameraAccess = false
-                }
-                if (AVCaptureDevice.authorizationStatus(for: AVMediaType.video) == .notDetermined)||(AVCaptureDevice.authorizationStatus(for: AVMediaType.video) == .denied) {
-                    
-                    AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler:
-                        { (photoCameraGranted: Bool) -> Void in
-                            // User clicked ok
-                            if (photoCameraGranted) {
-                                self.showImagePicker(.camera)
-                                // User clicked don't allow
-                            } else {
-                                if markerForStatusPhotoCameraAccess {
-                                    AlertsManager.shared.presentAlert(self, title: "Error", message: "Access denied")
-                                }
-                            }
-                    })
-                }
-                else {
-                    self.showImagePicker(.camera)
-                }
-            })
-            optionMenu.addAction(photoFromCamera)
+        cameraHandler.imageLocationBlock = { (location) in
+            self.userLocation = location
         }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-            
-        })
-        
-        if available {
-            optionMenu.addAction(cancelAction)
-            
-            // for ipad. Show choosing picker from button
-            if let popoverController = optionMenu.popoverPresentationController {
-                popoverController.sourceView = sender
-                popoverController.sourceRect = sender.bounds
-            }
-            //show choosing picker
-            self.present(optionMenu, animated: true, completion: nil)
-            
+        cameraHandler.cancelBlock = { (isCancel) in
+            self.isSelectedPhoto = !isCancel
         }
-    }
-    
-    
-    func showImagePicker(_ sourceType: UIImagePickerControllerSourceType){
-        imagePicker.allowsEditing = false
-        imagePicker.sourceType = sourceType
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
-    // MARK: - UIImagePickerControllerDelegate Methods
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            placeImageView.contentMode = .scaleToFill
-            placeImageView.image = pickedImage
-        }
-        
-        //Check location from image
-        let url = info[UIImagePickerControllerReferenceURL] as! URL
-        let library = ALAssetsLibrary()
-        library.asset(for: url as URL!, resultBlock: { (asset) in
-            if let location = asset?.value(forProperty: ALAssetPropertyLocation) as? CLLocation {
-                self.userLocation = location
-            }
-        }, failureBlock: { (error) in
-            print("Error!")
-        })
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        isSelectedPhoto = false
-        dismiss(animated: true, completion: nil)
     }
     
     //MARK: - Location Methods

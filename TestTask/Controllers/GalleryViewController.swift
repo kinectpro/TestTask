@@ -76,7 +76,6 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
         let allMargins = margin * (itemsPerRow + 1)
         let availableWidth = collectionView.frame.width - allMargins
         let width = availableWidth / itemsPerRow
-        print(width)
         return CGSize(width: width, height: width)
     }
 }
