@@ -21,6 +21,11 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
         getData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getData()
+    }
+    
     func getData(){
         NetworkManager.shared.getAll(success: { (images) in
             self.imagesData = images

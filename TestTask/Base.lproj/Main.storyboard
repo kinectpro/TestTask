@@ -19,7 +19,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cHp-uM-32D" customClass="TPKeyboardAvoidingScrollView" customModule="TestTask" customModuleProvider="target">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sG9-UV-B3o" customClass="TPKeyboardAvoidingScrollView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JiY-82-2gg">
@@ -94,6 +94,7 @@
                                             <constraint firstItem="OF4-dI-Khm" firstAttribute="top" secondItem="VMM-hO-Srv" secondAttribute="bottom" constant="30" id="eqO-HF-evX"/>
                                             <constraint firstItem="VMM-hO-Srv" firstAttribute="leading" secondItem="JiY-82-2gg" secondAttribute="leading" constant="36" id="ity-yK-JUX"/>
                                             <constraint firstItem="LGr-jy-Txm" firstAttribute="top" secondItem="VMM-hO-Srv" secondAttribute="bottom" id="ojS-5a-SKc"/>
+                                            <constraint firstAttribute="bottom" secondItem="94P-bf-H9L" secondAttribute="bottom" constant="239" id="rAr-SH-EiW"/>
                                             <constraint firstAttribute="trailing" secondItem="1fd-2e-L8w" secondAttribute="trailing" constant="36" id="sI8-8e-OoT"/>
                                             <constraint firstItem="OF4-dI-Khm" firstAttribute="leading" secondItem="JiY-82-2gg" secondAttribute="leading" constant="36" id="smN-IL-C2S"/>
                                             <constraint firstAttribute="trailing" secondItem="m5q-ae-cCo" secondAttribute="trailing" constant="36" id="va8-e2-qk0"/>
@@ -101,22 +102,21 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="JiY-82-2gg" secondAttribute="trailing" id="HDt-gW-hE3"/>
-                                    <constraint firstItem="JiY-82-2gg" firstAttribute="leading" secondItem="cHp-uM-32D" secondAttribute="leading" id="PgR-6X-v0T"/>
-                                    <constraint firstItem="JiY-82-2gg" firstAttribute="top" secondItem="cHp-uM-32D" secondAttribute="top" id="fQV-JJ-HVT"/>
-                                    <constraint firstAttribute="bottom" secondItem="JiY-82-2gg" secondAttribute="bottom" id="zyu-BG-v4h"/>
+                                    <constraint firstAttribute="trailing" secondItem="JiY-82-2gg" secondAttribute="trailing" id="BDJ-bh-hci"/>
+                                    <constraint firstItem="JiY-82-2gg" firstAttribute="top" secondItem="sG9-UV-B3o" secondAttribute="top" id="Rcs-FO-TmB"/>
+                                    <constraint firstAttribute="bottom" secondItem="JiY-82-2gg" secondAttribute="bottom" id="eL3-dl-TfF"/>
+                                    <constraint firstItem="JiY-82-2gg" firstAttribute="leading" secondItem="sG9-UV-B3o" secondAttribute="leading" id="l4h-Bc-6hr"/>
                                 </constraints>
-                            </view>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="cHp-uM-32D" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="SRt-pZ-k49"/>
-                            <constraint firstItem="cHp-uM-32D" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="XA1-ZZ-2eu"/>
-                            <constraint firstItem="JiY-82-2gg" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="aH2-FV-v6k"/>
-                            <constraint firstItem="cHp-uM-32D" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="iHI-cJ-GIz"/>
-                            <constraint firstItem="cHp-uM-32D" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="nfV-pa-wH7"/>
+                            <constraint firstItem="JiY-82-2gg" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="N94-F2-GY2"/>
+                            <constraint firstItem="sG9-UV-B3o" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="RTd-yC-L8A"/>
+                            <constraint firstAttribute="bottom" secondItem="sG9-UV-B3o" secondAttribute="bottom" id="YiX-Iv-tUD"/>
+                            <constraint firstItem="sG9-UV-B3o" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="rDG-jf-WAr"/>
+                            <constraint firstAttribute="trailing" secondItem="sG9-UV-B3o" secondAttribute="trailing" id="ycw-ug-h8K"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
